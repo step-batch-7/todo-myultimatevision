@@ -4,7 +4,7 @@
     {title:'todo app',todoItems:[
       { list:item1,isDone:false },
       { list:item2,isDone:false }
-      ]}
+      ],isDone:false}
   ]
 
 * make the home page
@@ -18,3 +18,5 @@
 * mark an item done or undone
 
 * delete one todo item from the file
+
+* delete one todo list from lists
