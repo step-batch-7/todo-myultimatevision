@@ -13,8 +13,7 @@ class App {
   }
   serve(req, res) {
     console.log('Request: ', req.url, req.method);
-    const matchingHandlers = this.routes.filter((route) =>
-      matchRoute(route, req));
+    const matchingHandlers = this.routes.filter((route) => matchRoute(route, req));
     const next = function () {
       if (matchingHandlers) {
         const router = matchingHandlers.shift();

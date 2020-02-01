@@ -2,18 +2,18 @@
 * data structure
   [
     {title:'todo app',todoItems:[
-      { list:item1,isDone:false },
-      { list:item2,isDone:false }
+      { item:item1,isDone:false },
+      { item:item2,isDone:false }
       ],isDone:false}
   ]
 
-* make the home page
+--done-- * make the home page
 
-* keep text boxes in home page so user can add their todoItems
+--done--* keep text boxes in home page so user can add their todoItems
 
-* by submitting it should store in json file.
+--done--* by submitting it should store in json file.
 
-* every time it should load from json file and display on that page
+--done--* every time it should load from json file and display on that page
 
 * mark an item done or undone
 

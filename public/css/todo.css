@@ -1,0 +1,18 @@
+h1 {
+  text-align: center;
+}
+
+input {
+  margin: 5px;
+}
+
+div {
+  align-self: center;
+  margin: 5%;
+  background-color: whitesmoke;
+}
+
+form {
+  margin: 10%;
+  align-self: center;
+}
