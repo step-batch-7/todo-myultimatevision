@@ -1,1 +1,12 @@
-[{"title":"todo app","todoItems":[{"item":" make the home page"}]}]
+[
+  {
+    "title": "todo app",
+    "todoItems": [
+      { "item": " hello", "isDone": false },
+      { "item": "welcome", "isDone": false },
+      { "item": "get", "isDone": false },
+      { "item": "preserve", "isDone": false },
+      { "item": "send", "isDone": false }
+    ]
+  }
+]
