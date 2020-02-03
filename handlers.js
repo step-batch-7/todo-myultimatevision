@@ -46,8 +46,12 @@ const redirectTo = function (res, file) {
 const saveToDo = function (req, res) {
   const filePath = './data/todos.json';
   const todos = loadTodos();
-  const { title, todoItems } = req.body;
-  todos.unshift({ title, todoItems: [{ item: todoItems }] });
+  console.log(req.body);
+  const { title, todoItem } = req.body;
+  const todoItems = todoItem.map((item) => {
+    return { item, isDone: false }
+  })
+  todos.unshift({ title, todoItems });
   fs.writeFileSync(filePath, JSON.stringify(todos), 'utf8');
   redirectTo(res, '/home.html');
 };

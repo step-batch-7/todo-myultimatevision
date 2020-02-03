@@ -3,16 +3,26 @@ h1 {
 }
 
 input {
-  margin: 5px;
-}
-
-div {
-  align-self: center;
-  margin: 5%;
-  background-color: whitesmoke;
+  margin: 10px;
 }
 
 form {
   margin: 10%;
   align-self: center;
+  background-color: whitesmoke;
+  width: 500px;
+  padding: 10px;
+}
+
+.active {
+  display: block;
+}
+
+.inActive {
+  display: none;
+}
+
+.form {
+  align-self: center;
+  margin: 5%;
 }

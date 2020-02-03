@@ -4,13 +4,40 @@
     <link rel="stylesheet" href="css/todo.css"
   </head>
   <body>
-    <h1>Todo</h1>
-    <div>
+    <script>
+      const todoItems = [];
+      const changeAction = function() {
+        const activeElement = document.getElementsByClassName("active")[0];
+        const inActiveElement = document.getElementsByClassName("inActive")[0];
+        activeElement.classList.replace("active", "inActive");
+        inActiveElement.classList.replace("inActive", "active");
+      };
+
+      const addItem = function() {
+        const todoItems = document.getElementById("todoItems");
+        const item = document.createElement("textarea");
+        item.setAttribute("name", "todoItem");
+        item.rows = 3;
+        item.cols = 40;
+        todoItems.appendChild(item);
+      };
+    </script>
+    <h1>TODO</h1>
+    <div class="form">
       <form action="saveTodo" method="POST">
-        Tilte :<input type="type" name="title" required /> <br />
-        todo:<textarea name="todoItems" rows="10" cols="50" required> </textarea
-        ><br />
-        <input type="submit" name="create" />
+        <div class="active">
+          Tilte :<input type="text" name="title" required /> <br />
+          <input type="button" value="create" onclick="changeAction()" />
+        </div>
+
+        <div class="inActive">
+          Items<br />
+          <div id="todoItems">
+            <textarea name="todoItem" rows="3" cols="40" required> </textarea>
+          </div>
+          <input type="button" value="add" onclick="addItem()" /><br />
+          <input type="submit" name="create" />
+        </div>
       </form>
     </div>
     __todos__

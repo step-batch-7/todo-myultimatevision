@@ -9,11 +9,11 @@
 
 --done-- * make the home page
 
---done--* keep text boxes in home page so user can add their todoItems
+--done-- * keep text boxes in home page so user can add their todoItems
 
---done--* by submitting it should store in json file.
+--done-- * by submitting it should store in json file.
 
---done--* every time it should load from json file and display on that page
+--done-- * every time it should load from json file and display on that page
 
 * mark an item done or undone
 
