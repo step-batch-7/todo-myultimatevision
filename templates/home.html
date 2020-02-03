@@ -1,27 +1,10 @@
 <html>
   <head>
     <title>todo</title>
-    <link rel="stylesheet" href="css/todo.css"
+    <link rel="stylesheet" href="css/todo.css" />
+    <script src="js/home.js"></script>
   </head>
   <body>
-    <script>
-      const todoItems = [];
-      const changeAction = function() {
-        const activeElement = document.getElementsByClassName("active")[0];
-        const inActiveElement = document.getElementsByClassName("inActive")[0];
-        activeElement.classList.replace("active", "inActive");
-        inActiveElement.classList.replace("inActive", "active");
-      };
-
-      const addItem = function() {
-        const todoItems = document.getElementById("todoItems");
-        const item = document.createElement("textarea");
-        item.setAttribute("name", "todoItem");
-        item.rows = 3;
-        item.cols = 40;
-        todoItems.appendChild(item);
-      };
-    </script>
     <h1>TODO</h1>
     <div class="form">
       <form action="saveTodo" method="POST">
@@ -33,10 +16,13 @@
         <div class="inActive">
           Items<br />
           <div id="todoItems">
-            <textarea name="todoItem" rows="3" cols="40" required> </textarea>
+            <textarea name="todoItem" rows="3" cols="40" required></textarea>
           </div>
-          <input type="button" value="add" onclick="addItem()" /><br />
-          <input type="submit" name="create" />
+          <input type="button" value="add" onclick="addItem()" />
+          <input type="button" value="delete item" onclick="deleteItem()" />
+          <br />
+          <input type="submit" name="done" value="done" />
+          <input type="submit" name="cancel" value="cancel" />
         </div>
       </form>
     </div>

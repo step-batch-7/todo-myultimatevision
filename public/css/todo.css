@@ -25,4 +25,16 @@ form {
 .form {
   align-self: center;
   margin: 5%;
+  background-color: white;
+}
+.todolist {
+  margin: 2px;
+  padding: 4px;
+  background-color: whitesmoke;
+  border: 1px solid black;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
 }
