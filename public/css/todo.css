@@ -37,7 +37,7 @@ textarea {
 .previousTodoList {
   overflow: scroll;
   height: 80%;
-  padding: 5px;
+  padding: 5%;
 }
 
 #todoItems {
