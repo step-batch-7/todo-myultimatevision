@@ -74,3 +74,8 @@ textarea {
   display: flex;
   justify-content: space-between;
 }
+
+.done {
+  background-color: green;
+  border-radius: 10%;
+}

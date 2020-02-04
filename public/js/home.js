@@ -58,13 +58,13 @@ const writeToBody = text => {
   selectElement('body').innerHTML = text;
 };
 
-const createTodo = (id) => sendHttpPOST('createTodo', getContent(), writeToBody);
+const createTodo = () => sendHttpPOST('createTodo', getContent(), writeToBody);
 
 const deleteTodo = (id) => sendHttpPOST('deleteTodo', `id=${id}`, writeToBody);
 
 const deleteTask = (id) => sendHttpPOST('deleteTask', `id=${id}`, writeToBody);
 
-const doneTodo = (id) => sendHttpPOST('doneTodo', `id=${id}`, writeToBody);
+const doneTodo = (id) => sendHttpPOST('todoDone', `id=${id}`, writeToBody);
 
-const doneTask = (id) => sendHttpPOST('doneTask', `id=${id}`, writeToBody);
+const doneTask = (id) => sendHttpPOST('taskDone', `id=${id}`, writeToBody);
 
