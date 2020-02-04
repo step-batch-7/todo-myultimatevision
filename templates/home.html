@@ -5,27 +5,44 @@
     <script src="js/home.js"></script>
   </head>
   <body>
+    <script>
+      const createTodo = () => {
+        sendHttpPOST("createTodo", text => {
+          document.querySelector("body").innerHTML = text;
+        });
+      };
+    </script>
     <h1>TODO</h1>
-    <div class="form">
-      <form action="saveTodo" method="POST">
-        <div class="active">
-          Tilte :<input type="text" name="title" required /> <br />
-          <input type="button" value="create" onclick="changeAction()" />
+    <div class="todoPage">
+      <div class="createTodo">
+        <h2>Create your Todo</h2>
+        <div class="form">
+          Tilte :<input type="text" name="title" required /><br />
+          <input
+            type="submit"
+            name="create"
+            value="Create Todo"
+            onclick="createTodo()"
+          />
+          <input type="reset" name="cancel" value="Cancel" /><br />
         </div>
-
-        <div class="inActive">
-          Items<br />
+      </div>
+      <div class="outer">
+        <h2>Tasks</h2>
+        <div class="tasks">
+          <input type="button" value="Add Task" onclick="addItem()" />
+          <input type="button" value="Delete Task" onclick="deleteItem()" />
           <div id="todoItems">
             <textarea name="todoItem" rows="3" cols="40" required></textarea>
           </div>
-          <input type="button" value="add" onclick="addItem()" />
-          <input type="button" value="delete item" onclick="deleteItem()" />
-          <br />
-          <input type="submit" name="done" value="done" />
-          <input type="submit" name="cancel" value="cancel" />
         </div>
-      </form>
+      </div>
+      <div>
+        <h2>Todo List</h2>
+        <div class="previousTodoList">
+          __todos__
+        </div>
+      </div>
     </div>
-    __todos__
   </body>
 </html>
