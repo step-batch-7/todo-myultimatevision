@@ -5,26 +5,13 @@
     <script src="js/home.js"></script>
   </head>
   <body>
-    <script>
-      const createTodo = () => {
-        sendHttpPOST("createTodo", text => {
-          document.querySelector("body").innerHTML = text;
-        });
-      };
-    </script>
     <h1>TODO</h1>
     <div class="todoPage">
       <div class="createTodo">
         <h2>Create your Todo</h2>
         <div class="form">
           Tilte :<input type="text" name="title" required /><br />
-          <input
-            type="submit"
-            name="create"
-            value="Create Todo"
-            onclick="createTodo()"
-          />
-          <input type="reset" name="cancel" value="Cancel" /><br />
+          <input type="submit" value="Create Todo" onclick="createTodo()" />
         </div>
       </div>
       <div class="outer">
@@ -37,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="todoList">
         <h2>Todo List</h2>
         <div class="previousTodoList">
           __todos__

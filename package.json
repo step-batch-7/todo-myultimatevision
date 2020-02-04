@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "",
+    "test": "mocha",
     "start": "node server.js"
   },
   "repository": {
