@@ -69,7 +69,7 @@ const writeToBody = text => {
   getElementById('todos').innerHTML = getTodosHtml(JSON.parse(text));
 };
 
-const getHomePage = () => sendHttpGET('serveTodos', writeToBody);
+const loadTodos = () => sendHttpGET('serveTodos', writeToBody);
 
 const createTodo = () => sendHttpPOST('createTodo', getContent(), writeToBody);
 

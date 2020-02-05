@@ -1,13 +1,1 @@
-[
-  {
-    "title": "todo app",
-    "tasks": [
-      { "item": "make home page", "id": 1580818428628, "isDone": true },
-      { "item": "store data in a file", "id": 1580818428629, "isDone": false },
-      { "item": "get data from file", "id": 1580818428630, "isDone": false },
-      { "item": "display data on page", "id": 1580818428631, "isDone": false }
-    ],
-    "id": 1580818428627,
-    "isDone": false
-  }
-]
+[]
