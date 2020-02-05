@@ -77,7 +77,7 @@ const deleteTodo = (id) => sendHttpPOST('deleteTodo', `id=${id}`, writeToBody);
 
 const deleteTask = (id) => sendHttpPOST('deleteTask', `id=${id}`, writeToBody);
 
-const doneTodo = (id) => sendHttpPOST('todoDone', `id=${id}`, writeToBody);
+const markTodoAsDone = (id) => sendHttpPOST('markTodoAsDone', `id=${id}`, writeToBody);
 
-const doneTask = (id) => sendHttpPOST('taskDone', `id=${id}`, writeToBody);
+const markTaskAsDone = (id) => sendHttpPOST('markTaskAsDone', `id=${id}`, writeToBody);
 

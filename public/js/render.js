@@ -4,7 +4,7 @@ const getTaskAsHtml = function (task) {
     `<span class="task">
      <span>${item}</span>
      <div>
-     <input type="button" value="Done" onclick="doneTask(${id})"/>
+     <input type="button" value="Done" onclick="markTaskAsDone(${id})"/>
      <img src="images/trash.png" width='20px' onclick="deleteTask(${id})"/> 
      </div>
      </span><br/>`);
@@ -15,7 +15,7 @@ const getTodoAsHtml = function (todo) {
   return (
     `<div class='todo' id="${id}">
        <div class="header"> <b>${title.toUpperCase()}</b><div> 
-       <input type="button" value="Done" onclick="doneTodo(${id})"/>
+       <input type="button" value="Done" onclick="markTodoAsDone(${id})"/>
        <img src="images/trash.png" width='20px' onclick="deleteTodo(${id})"/>
        </div>
      </div>
