@@ -35,7 +35,7 @@ textarea {
   margin-bottom: 1px solid black;
 }
 
-.previousTodoList {
+#todos {
   overflow: scroll;
   height: 80%;
   width: 100%;

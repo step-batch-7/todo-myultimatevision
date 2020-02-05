@@ -54,9 +54,22 @@ const sendHttpPOST = (url, message, callback) => {
   req.send(message);
 };
 
-const writeToBody = text => {
-  selectElement('body').innerHTML = text;
+const sendHttpGET = (url, callback) => {
+  const req = new XMLHttpRequest();
+  req.onload = function () {
+    if (this.status === 200) {
+      callback(this.responseText);
+    }
+  };
+  req.open('GET', url);
+  req.send();
 };
+
+const writeToBody = text => {
+  getElementById('todos').innerHTML = getTodosHtml(JSON.parse(text));
+};
+
+const getHomePage = () => sendHttpGET('serveTodos', writeToBody);
 
 const createTodo = () => sendHttpPOST('createTodo', getContent(), writeToBody);
 

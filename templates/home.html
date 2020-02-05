@@ -3,8 +3,9 @@
     <title>todo</title>
     <link rel="stylesheet" href="css/todo.css" />
     <script src="js/home.js"></script>
+    <script src="js/render.js"></script>
   </head>
-  <body>
+  <body onload="getHomePage()">
     <h1>TODO</h1>
     <div class="todoPage">
       <div class="createTodo">
@@ -26,9 +27,7 @@
       </div>
       <div class="todoList">
         <h2>Todo List</h2>
-        <div class="previousTodoList">
-          __todos__
-        </div>
+        <div id="todos"></div>
       </div>
     </div>
   </body>
