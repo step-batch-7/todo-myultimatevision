@@ -8,20 +8,38 @@
   <body onload="loadTodos()">
     <h1>TODO</h1>
     <div class="todoPage">
-      <div class="createTodo">
+      <div class="adder">
         <h2>Create your Todo</h2>
         <div class="form">
-          Tilte :<input type="text" name="title" required /><br />
-          <input type="submit" value="Create Todo" onclick="createTodo()" />
-        </div>
-      </div>
-      <div class="outer">
-        <h2>Tasks</h2>
-        <div class="tasks">
-          <input type="button" value="Add Task" onclick="addItem()" />
-          <input type="button" value="Delete Task" onclick="deleteItem()" />
-          <div id="todoItems">
-            <textarea name="todoItem" rows="3" cols="40" required></textarea>
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter Title"
+            id="inputTitle"
+            autocomplete="off"
+            required
+          />
+          <input
+            class="button"
+            type="submit"
+            value="Create"
+            onclick="createTodo()"
+          />
+          <h2>Tasks</h2>
+          <div id="todoItems"></div>
+          <div class="taskButtons">
+            <input
+              class="button"
+              type="button"
+              value="add"
+              onclick="addItem()"
+            />
+            <input
+              class="button"
+              type="button"
+              value="delete"
+              onclick="deleteItem()"
+            />
           </div>
         </div>
       </div>
