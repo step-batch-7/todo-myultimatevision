@@ -1,22 +1,26 @@
 const getTaskAsHtml = function (task) {
   const { item, id, isDone } = task;
+  const className = isDone ? 'done' : 'undone';
+  const name = isDone ? 'done' : 'mark';
   return (
     `<span class="task">
      <span>${item}</span>
      <div>
-     <input type="button" value="Done" onclick="markTaskAsDone(${id})"/>
-     <img src="images/trash.png" width='20px' onclick="deleteTask(${id})"/> 
+     <input type="button" value="${name}" onclick="toggleTaskDoneStatus(${id})" class="${className}"/>
+     <input type="button" value="delete" onclick="deleteTask(${id})" />
      </div>
      </span><br/>`);
 };
 
 const getTodoAsHtml = function (todo) {
-  const { id, title, tasks } = todo;
+  const { id, title, tasks, isDone } = todo;
+  const image = isDone ? 'tickBox.svg' : 'unTickBox.svg';
   return (
     `<div class='todo' id="${id}">
        <div class="header"> <b>${title.toUpperCase()}</b><div> 
-       <input type="button" value="Done" onclick="markTodoAsDone(${id})"/>
-       <img src="images/trash.png" width='20px' onclick="deleteTodo(${id})"/>
+       <img src="images/edit.svg"/>
+       <img src="images/${image}" onclick="toggleTodoDoneStatus(${id})"/>
+       <img src="images/trash.svg" onclick="deleteTodo(${id})"/>
        </div>
      </div>
      <ul>
@@ -26,7 +30,7 @@ const getTodoAsHtml = function (todo) {
 };
 
 const getTodosHtml = function (todoList) {
-  return todoList.map(getTodoAsHtml);
+  return todoList.map(getTodoAsHtml).join('\n');
 };
 
 const createElement = (element) => document.createElement(element);
@@ -49,7 +53,9 @@ const addItem = function () {
 const deleteItem = function () {
   const todoItems = getElement('#todoItems');
   const items = getAllElements('.inputItems');
-  todoItems.removeChild(items[items.length - 1]);
+  if (items.length > 1) {
+    todoItems.removeChild(items[items.length - 1]);
+  }
 };
 
 const refreshHomePage = function (title, inputItems) {
@@ -66,7 +72,6 @@ const getContent = function () {
   const title = `title=${titleTag.value}`;
   refreshHomePage(titleTag, inputItems);
   if (tasks.length !== 0) {
-    console.log(`${title}&${tasks.join('&')}`);
     return `${title}&${tasks.join('&')}`;
   }
   return title;
@@ -106,9 +111,8 @@ const deleteTodo = (id) => sendHttpPOST('deleteTodo', `id=${id}`, writeToBody);
 
 const deleteTask = (id) => sendHttpPOST('deleteTask', `id=${id}`, writeToBody);
 
-const markTodoAsDone = (id) =>
-  sendHttpPOST('markTodoAsDone', `id=${id}`, writeToBody);
+const toggleTodoDoneStatus = (id) =>
+  sendHttpPOST('toggleTodoDoneStatus', `id=${id}`, writeToBody);
 
-const markTaskAsDone = (id) =>
-  sendHttpPOST('markTaskAsDone', `id=${id}`, writeToBody);
-
+const toggleTaskDoneStatus = (id) =>
+  sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, writeToBody);

@@ -3,14 +3,13 @@
     <title>todo</title>
     <link rel="stylesheet" href="css/todo.css" />
     <script src="js/home.js"></script>
-    <script src="js/render.js"></script>
   </head>
   <body onload="loadTodos()">
     <h1>TODO</h1>
     <div class="todoPage">
-      <div class="adder">
+      <div class="createTodo">
         <h2>Create your Todo</h2>
-        <div class="form">
+        <div id="form">
           <input
             type="text"
             name="title"
@@ -26,18 +25,22 @@
             onclick="createTodo()"
           />
           <h2>Tasks</h2>
-          <div id="todoItems"></div>
-          <div class="taskButtons">
+          <div id="todoItems">
             <input
-              class="button"
-              type="button"
-              value="add"
-              onclick="addItem()"
+              type="text"
+              name="todoItem"
+              placeholder="Enter Task"
+              class="inputItems"
+              autocomplete="off"
+              required
             />
+          </div>
+          <div class="taskButtons">
+            <input class="button" type="button" value="+" onclick="addItem()" />
             <input
               class="button"
               type="button"
-              value="delete"
+              value="-"
               onclick="deleteItem()"
             />
           </div>

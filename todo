@@ -15,8 +15,8 @@
 
 --done-- * every time it should load from json file and display on that page
 
-* mark an item done or undone
+--done-- * mark an item done or undone
 
-* delete one todo item from the file
+--done-- * delete one todo item from the file
 
-* delete one todo list from lists
+--done-- * delete one todo list from lists

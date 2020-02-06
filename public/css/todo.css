@@ -9,9 +9,11 @@
   margin: 3% 2%;
 }
 
-h1 {
+h1,
+h2 {
   text-align: center;
 }
+
 input {
   margin: 10px;
   align-self: center;
@@ -47,12 +49,6 @@ input {
   margin-bottom: 1px solid black;
 }
 
-#todos {
-  overflow: scroll;
-  height: 80%;
-  width: 100%;
-}
-
 .task {
   display: flex;
   justify-content: space-between;
@@ -60,31 +56,48 @@ input {
 
 #todoItems {
   width: 100%;
-  height: 50%;
+  height: 60%;
   border: 1px solid black;
+  border-radius: 5%;
   overflow: scroll;
 }
 
-.adder {
-  align-self: center;
+#form,
+#todos {
+  width: 90%;
+  border-radius: 10px;
   background-color: white;
-  height: 70%;
-  width: 30%;
-  padding: 1%;
+  margin: 2%;
+  padding: 2%;
 }
 
-.form {
-  padding: 1%;
+#form {
+  height: 83%;
+}
+
+#todos {
+  height: 80%;
+  overflow: scroll;
+}
+
+.createTodo,
+.todoList {
+  height: 96%;
+  padding: 1% 2%;
+}
+
+.createTodo {
+  width: 30%;
 }
 
 .todoList {
-  width: 40%;
-  height: 100%;
+  width: 60%;
 }
 
 .done {
-  background-color: green;
-  border-radius: 10%;
+  background-color: rgb(97, 189, 6);
+  color: white;
+  border-radius: 15%;
 }
 
 .buttons {
