@@ -138,28 +138,14 @@ img {
   width: 20%;
 }
 
-#popUp {
-  visibility: hidden;
-  position: relative;
-  cursor: pointer;
-  margin-left: 10%;
-  margin-top: 1%;
-  padding: 4px;
-  background-color: white;
-  width: 40%;
-  height: 5%;
-  border-radius: 5px;
-}
-
-.popUpBtn {
-  background-color: skyblue;
-  cursor: pointer;
-}
-
 .inputTasks {
   width: 60%;
   border: 0px;
   border-bottom: 1px solid black;
   text-align: center;
   outline: transparent;
+}
+
+.addButton {
+  cursor: pointer;
 }

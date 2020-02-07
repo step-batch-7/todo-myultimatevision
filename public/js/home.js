@@ -1,9 +1,8 @@
-let id, itemToDelete;
 const getTaskAsHtml = function (task) {
   const { item, id, isDone } = task;
   const [displayTag, check] = isDone ? ['strike', 'checked'] : ['span', ''];
   const checkOnclick = `onclick = "toggleTaskDoneStatus(${id})"`;
-  const buttonOnclick = `onclick="getDeletePop(${id},'task'`;
+  const buttonOnclick = `onclick="performDelete(${id},'task'`;
   return (
     `<span class="task">
       <span>
@@ -23,18 +22,16 @@ const getTodoAsHtml = function (todo) {
   return (
     `<div class='todo' id="id${id}">
        <div class="header">
-         <b>${tasksDone.length}/${tasks.length}</b>
+      <b>${tasksDone.length}/${tasks.length}</b>
          <b>${title}</b>
          <div> 
            <img src="images/edit.svg"/>
            <img src="images/${image}" onclick="addInput(${id})"/>
-           <img src="images/trash.svg" onclick="getDeletePop(${id},'todo')"/>
+           <img src="images/trash.svg" onclick="performDelete(${id},'todo')"/>
          </div>
        </div>
        <div class="addItem" id="input${id}"></div>
-       <ul>
          ${ tasks.map(getTaskAsHtml).join('\n')}
-       </ul>
      </div>`);
 };
 
@@ -48,23 +45,15 @@ const getElement = (element) => document.querySelector(element);
 
 const getAllElements = (element) => document.querySelectorAll(element);
 
-const refreshHomePage = function (title, inputItems) {
-  const todoItems = getElement('#todoItems');
-  inputItems.forEach((inputItem) => todoItems.removeChild(inputItem));
-  title.value = '';
+const refreshHomePage = function (title) {
+
 };
 
 const getContent = function () {
-  const titleTag = getElement('input');
-  const inputItems = Array.from(getAllElements('.inputItems'));
-  const tasksTodo = inputItems.filter((inputItem) => inputItem.value !== '');
-  const tasks = tasksTodo.map((task) => `tasks=${task.value}`);
-  const title = `title=${titleTag.value}`;
-  refreshHomePage(titleTag, inputItems);
-  if (tasks.length !== 0) {
-    return `${title}&${tasks.join('&')}`;
-  }
-  return title;
+  const title = getElement('input');
+  const inputTitle = title.value;
+  title.value = '';
+  return `title=${inputTitle}`;
 };
 
 const sendHttpPOST = (url, message, callback) => {
@@ -110,31 +99,22 @@ const toggleTaskDoneStatus = (id) =>
 const addTask = function (id) {
   const task = getElement(`#input${id}`).firstElementChild.value;
   sendHttpPOST('addTask', `id=${id}&&task=${task}`, writeToBody);
-
 };
 
-const getDeletePop = (itemId, item) => {
-  getElement('#popUp').style.visibility = 'visible';
-  id = itemId;
-  itemToDelete = item;
-};
-
-const closePopUp = function () {
-  getElement('#popUp').style.visibility = 'hidden';
-};
-
-const performDelete = () => {
-  if (itemToDelete === 'task') {
-    deleteTask(id);
-    closePopUp();
-    return;
+const performDelete = (id, item) => {
+  var isDeleted = confirm('do you really want to delete ?');
+  if (isDeleted === true) {
+    if (item === 'task') {
+      deleteTask(id);
+      return;
+    }
+    deleteTodo(id);
   }
-  deleteTodo(id);
-  closePopUp();
 };
 
 const addButton = (taskAdder, id) => {
   const button = createElement('input');
+  button.setAttribute('class', 'addButton');
   button.setAttribute('type', 'button');
   button.setAttribute('value', 'add');
   button.setAttribute('onclick', `addTask(${id})`);
