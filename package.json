@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node server.js"
+    "test": "export DATA_STORE=test/resource/todo.json;mocha",
+    "start": "export DATA_STORE=data/todo.json;node server.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/step-batch-7/todo-myultimatevision/issues"
   },
-  "homepage": "https://github.com/step-batch-7/todo-myultimatevision#readme"
+  "homepage": "https://github.com/step-batch-7/todo-myultimatevision#readme",
+  "dependencies": {
+    "sinon": "^8.1.1",
+    "supertest": "^4.0.2"
+  }
 }
