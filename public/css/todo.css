@@ -149,3 +149,9 @@ img {
 .addButton {
   cursor: pointer;
 }
+
+b,
+div,
+span {
+  outline: none;
+}

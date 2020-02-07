@@ -1,13 +1,14 @@
 const getTaskAsHtml = function (task) {
   const { item, id, isDone } = task;
-  const [displayTag, check] = isDone ? ['strike', 'checked'] : ['span', ''];
+  const [cName, check] = isDone ? ['class="lightText"', 'checked'] : ['', ''];
   const checkOnclick = `onclick = "toggleTaskDoneStatus(${id})"`;
   const buttonOnclick = `onclick="performDelete(${id},'task'`;
   return (
     `<span class="task">
       <span>
         <input type="checkbox" ${checkOnclick} ${check} />
-        <${displayTag}>${item}</${displayTag}>
+        <span ${cName} contenteditable="true" onfocusout="renameTask(${id})" id="task${id}">
+        ${item}</span>
       </span>
       <div>
         <input class="delete" type="button" value="delete" ${buttonOnclick})" />
@@ -23,9 +24,10 @@ const getTodoAsHtml = function (todo) {
     `<div class='todo' id="id${id}">
        <div class="header">
       <b>${tasksDone.length}/${tasks.length}</b>
-         <b>${title}</b>
+         <b contenteditable="true" onfocusout="renameTitle(${id})" id="title${id}">
+         ${title}</b>
          <div> 
-           <img src="images/edit.svg"/>
+           <img src="images/edit.svg" onclick="focusonInput(${id})"/>
            <img src="images/${image}" onclick="addInput(${id})"/>
            <img src="images/trash.svg" onclick="performDelete(${id},'todo')"/>
          </div>
@@ -44,10 +46,6 @@ const createElement = (element) => document.createElement(element);
 const getElement = (element) => document.querySelector(element);
 
 const getAllElements = (element) => document.querySelectorAll(element);
-
-const refreshHomePage = function (title) {
-
-};
 
 const getContent = function () {
   const title = getElement('input');
@@ -96,13 +94,25 @@ const toggleTodoDoneStatus = (id) =>
 const toggleTaskDoneStatus = (id) =>
   sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, writeToBody);
 
+const renameTitle = (id) => {
+  const title = getElement(`#title${id}`).innerText;
+  const data = `id=${id}&title=${title}`;
+  sendHttpPOST('renameTitle', data, writeToBody);
+};
+
+const renameTask = (id) => {
+  const task = getElement(`#task${id}`).innerText;
+  const data = `id=${id}&task=${task}`;
+  sendHttpPOST('renameTask', data, writeToBody);
+};
+
 const addTask = function (id) {
   const task = getElement(`#input${id}`).firstElementChild.value;
   sendHttpPOST('addTask', `id=${id}&&task=${task}`, writeToBody);
 };
 
 const performDelete = (id, item) => {
-  var isDeleted = confirm('do you really want to delete ?');
+  const isDeleted = confirm('do you really want to delete ?');
   if (isDeleted === true) {
     if (item === 'task') {
       deleteTask(id);
@@ -135,4 +145,20 @@ const addInput = (id) => {
   addInputBox(taskAdder);
   addButton(taskAdder, id);
 };
+
+const focusonInput = (id) => {
+  const title = getElement(`#title${id}`);
+  const value = title.innerText;
+  title.focus();
+  title.value = '';
+  title.value = value;
+}
+
+const focusonTask = (id) => {
+  const title = getElement(`#task${id}`);
+  const value = title.innerText;
+  title.focus();
+  title.value = '';
+  title.value = value;
+}
 
