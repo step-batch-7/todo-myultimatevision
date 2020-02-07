@@ -1,32 +1,41 @@
+let id, itemToDelete;
 const getTaskAsHtml = function (task) {
   const { item, id, isDone } = task;
-  const className = isDone ? 'done' : 'undone';
-  const name = isDone ? 'done' : 'mark';
+  const [displayTag, check] = isDone ? ['strike', 'checked'] : ['span', ''];
+  const checkOnclick = `onclick = "toggleTaskDoneStatus(${id})"`;
+  const buttonOnclick = `onclick="getDeletePop(${id},'task'`;
   return (
     `<span class="task">
-     <span>${item}</span>
-     <div>
-     <input type="button" value="${name}" onclick="toggleTaskDoneStatus(${id})" class="${className}"/>
-     <input type="button" value="delete" onclick="deleteTask(${id})" />
-     </div>
+      <span>
+        <input type="checkbox" ${checkOnclick} ${check} />
+        <${displayTag}>${item}</${displayTag}>
+      </span>
+      <div>
+        <input class="delete" type="button" value="delete" ${buttonOnclick})" />
+      </div>
      </span><br/>`);
 };
 
 const getTodoAsHtml = function (todo) {
-  const { id, title, tasks, isDone } = todo;
-  const image = isDone ? 'tickBox.svg' : 'unTickBox.svg';
+  const { id, title, tasks } = todo;
+  const tasksDone = tasks.filter(task => task.isDone);
+  const image = 'plus.svg';
   return (
-    `<div class='todo' id="${id}">
-       <div class="header"> <b>${title.toUpperCase()}</b><div> 
-       <img src="images/edit.svg"/>
-       <img src="images/${image}" onclick="toggleTodoDoneStatus(${id})"/>
-       <img src="images/trash.svg" onclick="deleteTodo(${id})"/>
+    `<div class='todo' id="id${id}">
+       <div class="header">
+         <b>${tasksDone.length}/${tasks.length}</b>
+         <b>${title}</b>
+         <div> 
+           <img src="images/edit.svg"/>
+           <img src="images/${image}" onclick="addInput(${id})"/>
+           <img src="images/trash.svg" onclick="getDeletePop(${id},'todo')"/>
+         </div>
        </div>
-     </div>
-     <ul>
-       ${ tasks.map(getTaskAsHtml).join('\n')}
-     </ul>
-   </div>`);
+       <div class="addItem" id="input${id}"></div>
+       <ul>
+         ${ tasks.map(getTaskAsHtml).join('\n')}
+       </ul>
+     </div>`);
 };
 
 const getTodosHtml = function (todoList) {
@@ -38,25 +47,6 @@ const createElement = (element) => document.createElement(element);
 const getElement = (element) => document.querySelector(element);
 
 const getAllElements = (element) => document.querySelectorAll(element);
-
-const addItem = function () {
-  const todoItems = getElement('#todoItems');
-  const item = createElement('input');
-  item.setAttribute('name', 'todoItem');
-  item.setAttribute('type', 'text');
-  item.setAttribute('placeholder', 'Enter Task');
-  item.setAttribute('class', 'inputItems');
-  item.setAttribute('autocomplete', 'off');
-  todoItems.appendChild(item);
-};
-
-const deleteItem = function () {
-  const todoItems = getElement('#todoItems');
-  const items = getAllElements('.inputItems');
-  if (items.length > 1) {
-    todoItems.removeChild(items[items.length - 1]);
-  }
-};
 
 const refreshHomePage = function (title, inputItems) {
   const todoItems = getElement('#todoItems');
@@ -116,3 +106,53 @@ const toggleTodoDoneStatus = (id) =>
 
 const toggleTaskDoneStatus = (id) =>
   sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, writeToBody);
+
+const addTask = function (id) {
+  const task = getElement(`#input${id}`).firstElementChild.value;
+  sendHttpPOST('addTask', `id=${id}&&task=${task}`, writeToBody);
+
+};
+
+const getDeletePop = (itemId, item) => {
+  getElement('#popUp').style.visibility = 'visible';
+  id = itemId;
+  itemToDelete = item;
+};
+
+const closePopUp = function () {
+  getElement('#popUp').style.visibility = 'hidden';
+};
+
+const performDelete = () => {
+  if (itemToDelete === 'task') {
+    deleteTask(id);
+    closePopUp();
+    return;
+  }
+  deleteTodo(id);
+  closePopUp();
+};
+
+const addButton = (taskAdder, id) => {
+  const button = createElement('input');
+  button.setAttribute('type', 'button');
+  button.setAttribute('value', 'add');
+  button.setAttribute('onclick', `addTask(${id})`);
+  taskAdder.appendChild(button);
+};
+
+const addInputBox = (taskAdder) => {
+  const item = createElement('input');
+  item.setAttribute('type', 'text');
+  item.setAttribute('placeholder', 'Enter Task');
+  item.setAttribute('class', 'inputTasks');
+  item.setAttribute('autocomplete', 'off');
+  taskAdder.appendChild(item);
+};
+
+const addInput = (id) => {
+  const taskAdder = getElement(`#input${id}`);
+  addInputBox(taskAdder);
+  addButton(taskAdder, id);
+};
+

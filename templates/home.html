@@ -19,36 +19,26 @@
             required
           />
           <input
-            class="button"
+            class="buttons"
             type="submit"
             value="Create"
             onclick="createTodo()"
           />
-          <h2>Tasks</h2>
-          <div id="todoItems">
-            <input
-              type="text"
-              name="todoItem"
-              placeholder="Enter Task"
-              class="inputItems"
-              autocomplete="off"
-              required
-            />
-          </div>
-          <div class="taskButtons">
-            <input class="button" type="button" value="+" onclick="addItem()" />
-            <input
-              class="button"
-              type="button"
-              value="-"
-              onclick="deleteItem()"
-            />
-          </div>
         </div>
       </div>
       <div class="todoList">
+        <div style="display: flex;flex-wrap: wrap;">
         <h2>Todo List</h2>
-        <div id="todos"></div>
+        <div id="popUp" >
+          <div class="popupdiv" id="myPopup">
+          <span>Do you want to delete?<span>
+            <input class="popUpBtn" type="button" value="delete" onclick="performDelete()" />
+            <input class="popUpBtn" type="button" value="cancel" onclick="closePopUp()" />
+        </div>
+      </div>
+      </div>
+        <div id="todos">
+        </div>
       </div>
     </div>
   </body>
