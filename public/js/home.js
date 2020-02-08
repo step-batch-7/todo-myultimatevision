@@ -117,8 +117,14 @@ const deleteTask = (id, todoId) => {
   });
 };
 
-const toggleTaskDoneStatus = (id) =>
-  sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, (text) => { });
+const toggleTaskDoneStatus = (id, todoId) =>
+  sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, (text) => {
+    const { isDone } = JSON.parse(text);
+    const counter = getElement(`#counter${todoId}`);
+    const [tasksDone, totalTasks] = counter.innerText.split('/');
+    const tasksCompleted = +tasksDone + (isDone ? 1 : -1);
+    counter.innerText = `${tasksCompleted}/${totalTasks}`
+  });
 
 const renameTitle = (id) => {
   const title = getElement(`#title${id}`);
@@ -137,21 +143,25 @@ const renameTask = (id) => {
   });
 };
 
-const addTask = function (id) {
+const appendTaskToTodo = (todo, text) => {
   const todo = getElement(`#id${id}`);
-  const inputBox = getElement(`#input${id}`);
-  const taskToAdd = inputBox.firstElementChild.value;
+  const task = JSON.parse(text);
+  const span = createElement('span');
+  span.setAttribute('class', 'task');
+  span.setAttribute('id', `task${task.id}`);
+  span.innerHTML = getTaskBody(task, id);
+  todo.appendChild(span);
+}
+
+const addTask = function (id) {
+  const inputBox = getElement(`#input${id}`).firstElementChild;
+  const taskToAdd = inputBox.value;
+  inputBox.value = '';
   const counter = getElement(`#counter${id}`);
   const [tasksDone, totalTasks] = counter.innerText.split('/');
   counter.innerText = `${+tasksDone}/${+totalTasks + 1}`;
-  sendHttpPOST('addTask', `id=${id}&&task=${taskToAdd}`, (text) => {
-    const task = JSON.parse(text);
-    const span = createElement('span');
-    span.setAttribute('class', 'task');
-    span.setAttribute('id', `task${task.id}`);
-    span.innerHTML = getTaskBody(task, id);
-    todo.appendChild(span);
-  });
+  const appendTask = appendTaskToTodo.bind(null, id)
+  sendHttpPOST('addTask', `id=${id}&&task=${taskToAdd}`, appendTask);
 };
 
 const performDelete = (id, item, todoId) => {
@@ -183,4 +193,3 @@ const searchItem = () => sendHttpGET('serveTodos', (text) => {
   });
   getElement('#todos').innerHTML = getTodosHtml(todos);
 });
-
