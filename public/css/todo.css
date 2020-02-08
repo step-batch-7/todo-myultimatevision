@@ -16,6 +16,7 @@ h2 {
 
 h1 {
   width: 100%;
+  margin: 20px;
 }
 
 input {
@@ -154,4 +155,12 @@ b,
 div,
 span {
   outline: none;
+}
+
+body {
+  background-color: gray;
+}
+
+.deleteBtn {
+  width: 50px;
 }
