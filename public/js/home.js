@@ -26,7 +26,7 @@ const getTodoBody = function (todo) {
   return (
     `<div class="header">
     <b id="counter${id}">${tasksDone.length}/${tasks.length}</b>
-     <b contenteditable="true" onfocusout="renameTitle(${id})" id="title${id}">
+     <b contenteditable="true" onfocusout="renameTitle(${id})" class="title" id="title${id}">
       ${title}</b>
      <div>
       <img src="images/edit.svg" onclick="focusonInput(${id})" />
@@ -143,7 +143,7 @@ const renameTask = (id) => {
   });
 };
 
-const appendTaskToTodo = (todo, text) => {
+const appendTaskToTodo = (id, text) => {
   const todo = getElement(`#id${id}`);
   const task = JSON.parse(text);
   const span = createElement('span');
@@ -185,11 +185,21 @@ const focusonInput = (id) => {
   title.focus();
 };
 
-const searchItem = () => sendHttpGET('serveTodos', (text) => {
-  const todoLists = JSON.parse(text);
-  const searchedText = getElement('#searchBar').value;
-  const todos = todoLists.filter((todo) => {
-    return todo.title.includes(searchedText);
+const getUniqueItems = (set1Elements, set2Elements) => {
+  const newElements = set2Elements.filter((element1) => {
+    return set1Elements.every(element2 => element1.id !== element2.id);
   });
-  getElement('#todos').innerHTML = getTodosHtml(todos);
-});
+  return newElements;
+}
+
+const searchItem = () => {
+  const searchedText = getElement('#searchBar').value;
+  const hideTodo = (todo) => todo.classList.add('hidden');
+  const unHideTodo = (todo) => todo.classList.remove('hidden');
+  const todos = Array.from(getAllElements('.todo'));
+  todos.forEach(todo => {
+    const title = todo.querySelector(`.title`).innerText;
+    const toggleHide = title.includes(searchedText) ? unHideTodo : hideTodo;
+    toggleHide(todo);
+  });
+};
