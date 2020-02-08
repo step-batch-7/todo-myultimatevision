@@ -22,11 +22,9 @@ const getTaskAsHtml = function (task) {
 
 const getTodoBody = function (todo) {
   const { id, title, tasks } = todo;
-  const tasksDone = tasks.filter(task => task.isDone);
   const image = 'plus.svg';
   return (
     `<div class="header">
-     <b class="noOfTasks${id}">${tasksDone.length}/${tasks.length}</b>
      <b contenteditable="true" onfocusout="renameTitle(${id})" id="title${id}">
       ${title}</b>
      <div>
@@ -35,7 +33,10 @@ const getTodoBody = function (todo) {
       <img src="images/trash.svg" onclick="performDelete(${id},'todo')" />
      </div>
    </div>
-    <div class="addItem" id="input${id}"></div>
+   <div class="addItem" id="input${id}" style="display:none;">
+    <input type="text" placeholder="Enter Task" class="inputTasks" required/>
+    <input type="button" value="Add" class="" />
+   </div>
       ${ tasks.map(getTaskAsHtml).join('\n')}`);
 }
 
@@ -95,7 +96,7 @@ const createTodo = () => sendHttpPOST('createTodo', getContent(), text => {
   const todo = JSON.parse(text);
   const div = createElement('div');
   div.setAttribute('id', `todo${todo.id}`);
-  div.innerHTML = getTodoAsHtml(todo)
+  div.innerHTML = getTodoBody(todo)
   getElement('#todos').prepend(div);
 });
 
@@ -140,12 +141,13 @@ const renameTask = (id) => {
 const addTask = function (id) {
   const todo = getElement(`#id${id}`);
   const inputBox = getElement(`#inputBox${id}`);
-  const task = inputBox.firstElementChild.value;
+  const taskToAdd = inputBox.firstElementChild.value;
   getElement(`#input${id}`).removeChild(inputBox);
-  sendHttpPOST('addTask', `id=${id}&&task=${task}`, (task) => {
+  sendHttpPOST('addTask', `id=${id}&&task=${taskToAdd}`, (text) => {
+    const task = JSON.parse(text);
     const span = createElement('span');
     span.setAttribute('class', 'task');
-    span.setAttribute('id', `task${id}`);
+    span.setAttribute('id', `task${task.id}`);
     span.innerHTML = getTaskBody(JSON.parse(task));
     todo.appendChild(span);
   });
@@ -162,31 +164,9 @@ const performDelete = (id, item) => {
   }
 };
 
-const addButton = (taskAdder, id) => {
-  const button = createElement('input');
-  button.setAttribute('class', 'addButton');
-  button.setAttribute('type', 'button');
-  button.setAttribute('value', 'add');
-  button.setAttribute('onclick', `addTask(${id})`);
-  taskAdder.appendChild(button);
-};
-
-const addInputBox = (taskAdder) => {
-  const item = createElement('input');
-  item.setAttribute('type', 'text');
-  item.setAttribute('placeholder', 'Enter Task');
-  item.setAttribute('class', 'inputTasks');
-  item.setAttribute('autocomplete', 'off');
-  taskAdder.appendChild(item);
-};
-
 const addInput = (id) => {
   const inputArea = getElement(`#input${id}`);
-  const taskAdder = createElement(`div`);
-  inputArea.appendChild(taskAdder);
-  taskAdder.setAttribute('id', `inputBox${id}`)
-  addInputBox(taskAdder);
-  addButton(taskAdder, id);
+  inputArea.style.display = inputArea.style.display === 'block' ? 'none' : 'block'
 };
 
 const focusonInput = (id) => {
