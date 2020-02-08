@@ -10,7 +10,7 @@ describe('GET', function () {
         .set('Accept', '*/*')
         .expect(200)
         .expect('Content-Type', 'text/html')
-        .expect('Content-Length', '1208')
+        .expect('Content-Length', '808')
         .expect(/Todo/, done);
     });
 
@@ -20,7 +20,7 @@ describe('GET', function () {
         .set('Accept', '*/*')
         .expect(200)
         .expect('Content-Type', 'text/html')
-        .expect('Content-Length', '1208')
+        .expect('Content-Length', '808')
         .expect(/Todo/, done);
     });
   });

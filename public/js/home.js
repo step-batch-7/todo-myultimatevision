@@ -1,30 +1,31 @@
-const getTaskBody = function (task) {
+const getTaskBody = function (task, todoId) {
   const { item, id, isDone } = task;
   const [cName, check] = isDone ? ['class="lightText"', 'checked'] : ['', ''];
-  const checkOnclick = `onclick = "toggleTaskDoneStatus(${id})"`;
-  const buttonOnclick = `onclick="performDelete(${id},'task'`;
+  const checkOnclick = `onclick = "toggleTaskDoneStatus(${id},${todoId})"`;
+  const buttonOnclick = `onclick="performDelete(${id},'task',${todoId})`;
   return (
     `<span>
       <input type="checkbox" ${checkOnclick} ${check} />
      <span ${cName} contenteditable="true" onfocusout="renameTask(${id})" id="item${id}">
       ${item}</span>
      </span>
-    <input class="deleteBtn" type="button" value="delete" ${buttonOnclick})" />`);
+    <input class="deleteBtn" type="button" value="delete" ${buttonOnclick}" />`);
 };
 
-const getTaskAsHtml = function (task) {
+const getTaskAsHtml = function (todoId, task) {
   return (
     `<span class="task" id="task${task.id}">
-      ${getTaskBody(task)}
+      ${getTaskBody(task, todoId)}
      </span><br/>`);
 };
 
-
 const getTodoBody = function (todo) {
   const { id, title, tasks } = todo;
+  const tasksDone = tasks.filter((task) => task.isDone)
   const image = 'plus.svg';
   return (
     `<div class="header">
+    <b id="counter${id}">${tasksDone.length}/${tasks.length}</b>
      <b contenteditable="true" onfocusout="renameTitle(${id})" id="title${id}">
       ${title}</b>
      <div>
@@ -35,9 +36,9 @@ const getTodoBody = function (todo) {
    </div>
    <div class="addItem" id="input${id}" style="display:none;">
     <input type="text" placeholder="Enter Task" class="inputTasks" required/>
-    <input type="button" value="Add" class="" />
+    <input type="button" value="Add" class="button" onclick="addTask(${id})"/>
    </div>
-      ${ tasks.map(getTaskAsHtml).join('\n')}`);
+      ${ tasks.map(task => getTaskAsHtml(id, task)).join('\n')}`);
 }
 
 const getTodoAsHtml = function (todo) {
@@ -86,16 +87,15 @@ const sendHttpGET = (url, callback) => {
   req.send();
 };
 
-const writeToBody = text => {
+const loadTodos = () => sendHttpGET('serveTodos', text => {
   getElement('#todos').innerHTML = getTodosHtml(JSON.parse(text));
-};
-
-const loadTodos = () => sendHttpGET('serveTodos', writeToBody);
+});
 
 const createTodo = () => sendHttpPOST('createTodo', getContent(), text => {
   const todo = JSON.parse(text);
   const div = createElement('div');
-  div.setAttribute('id', `todo${todo.id}`);
+  div.setAttribute('class', 'todo');
+  div.setAttribute('id', `id${todo.id}`);
   div.innerHTML = getTodoBody(todo)
   getElement('#todos').prepend(div);
 });
@@ -104,22 +104,21 @@ const deleteTodo = (id) => sendHttpPOST('deleteTodo', `id=${id}`, () => {
   getElement('#todos').removeChild(getElement(`#id${id}`));
 });
 
-const deleteTask = (id) => sendHttpPOST('deleteTask', `id=${id}`, () => {
-  const task = getElement(`#task${id}`);
-  const todo = task.parentElement;
-  todo.removeChild(task);
-});
+const deleteTask = (id, todoId) => {
+  sendHttpPOST('deleteTask', `id=${id}`, (text) => {
+    const { isDone } = JSON.parse(text);
+    const task = getElement(`#task${id}`);
+    const counter = getElement(`#counter${todoId}`);
+    const [tasksDone, totalTasks] = counter.innerText.split('/');
+    const todo = getElement(`#id${todoId}`);
+    todo.removeChild(task);
+    const tasksCompleted = isDone ? +tasksDone - 1 : tasksDone;
+    counter.innerText = `${tasksCompleted}/${+totalTasks - 1}`
+  });
+};
 
 const toggleTaskDoneStatus = (id) =>
-  sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, (text) => {
-    const task = getElement(JSON.parse(text).id);
-    const checkBox = task.previousSibling;
-    if (checkBox.checked) {
-      checkBox.setAttribute('checked', false);
-      return;
-    }
-    checkBox.setAttribute('checked', true);
-  });
+  sendHttpPOST('toggleTaskDoneStatus', `id=${id}`, (text) => { });
 
 const renameTitle = (id) => {
   const title = getElement(`#title${id}`);
@@ -140,24 +139,26 @@ const renameTask = (id) => {
 
 const addTask = function (id) {
   const todo = getElement(`#id${id}`);
-  const inputBox = getElement(`#inputBox${id}`);
+  const inputBox = getElement(`#input${id}`);
   const taskToAdd = inputBox.firstElementChild.value;
-  getElement(`#input${id}`).removeChild(inputBox);
+  const counter = getElement(`#counter${id}`);
+  const [tasksDone, totalTasks] = counter.innerText.split('/');
+  counter.innerText = `${+tasksDone}/${+totalTasks + 1}`;
   sendHttpPOST('addTask', `id=${id}&&task=${taskToAdd}`, (text) => {
     const task = JSON.parse(text);
     const span = createElement('span');
     span.setAttribute('class', 'task');
     span.setAttribute('id', `task${task.id}`);
-    span.innerHTML = getTaskBody(JSON.parse(task));
+    span.innerHTML = getTaskBody(task, id);
     todo.appendChild(span);
   });
 };
 
-const performDelete = (id, item) => {
+const performDelete = (id, item, todoId) => {
   const isDeleted = confirm('do you really want to delete ?');
   if (isDeleted === true) {
     if (item === 'task') {
-      deleteTask(id);
+      deleteTask(id, todoId);
       return;
     }
     deleteTodo(id);
@@ -174,4 +175,12 @@ const focusonInput = (id) => {
   title.focus();
 };
 
+const searchItem = () => sendHttpGET('serveTodos', (text) => {
+  const todoLists = JSON.parse(text);
+  const searchedText = getElement('#searchBar').value;
+  const todos = todoLists.filter((todo) => {
+    return todo.title.includes(searchedText);
+  });
+  getElement('#todos').innerHTML = getTodosHtml(todos);
+});
 

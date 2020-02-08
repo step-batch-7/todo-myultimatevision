@@ -163,4 +163,12 @@ body {
 
 .deleteBtn {
   width: 50px;
+  cursor: pointer;
+}
+
+#searchBar {
+  right: auto;
+  height: 10%;
+  width: 50%;
+  outline: transparent;
 }
