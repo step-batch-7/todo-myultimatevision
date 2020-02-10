@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../lib/handlers.js');
+const { app } = require('../lib/handlers');
 
 
 describe('GET', function () {
@@ -8,7 +8,6 @@ describe('GET', function () {
       request(app.serve.bind(app))
         .get('/')
         .set('Accept', '*/*')
-        .set('Cookie', '')
         .expect(200)
         .expect('Content-Type', 'text/html')
         .expect('Content-Length', '801')
@@ -34,6 +33,16 @@ describe('GET', function () {
         .set('Accept', '*/*')
         .expect(404)
         .expect(/Not Found/, done);
+    });
+  });
+
+  describe('/serveTodos', function () {
+    it('should get todos', function (done) {
+      request(app.serve.bind(app))
+        .get('/serveTodos')
+        .set('Accept', '*/*')
+        .expect(200)
+        .expect(/"title":"todo app"/, done);
     });
   });
 
