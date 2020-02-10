@@ -2,8 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  background-color: whitesmoke;
-  font-family: sans-serif;
+  background-color: gray;
   width: 96%;
   height: 80%;
   margin: 0% 2%;
@@ -12,6 +11,8 @@
 h1,
 h2 {
   text-align: center;
+  margin: 5px;
+  font-weight: 500;
 }
 
 h1 {
@@ -24,21 +25,13 @@ input {
   align-self: center;
 }
 
-.inputItems,
 #inputTitle {
   border: 0px;
   border-bottom: 1px solid black;
   text-align: center;
   outline: transparent;
-}
-
-#inputTitle {
+  font-size: 15px;
   width: 60%;
-}
-
-.inputItems {
-  width: 94%;
-  margin: 3%;
 }
 
 .todo {
@@ -100,6 +93,7 @@ input {
   width: 60%;
   word-wrap: break-word;
   word-break: break-all;
+  font-weight: 300;
 }
 
 .unDone,
@@ -142,6 +136,7 @@ img {
 .inputTasks {
   width: 60%;
   border: 0px;
+  font-size: 15px;
   border-bottom: 1px solid black;
   text-align: center;
   outline: transparent;
@@ -158,7 +153,8 @@ span {
 }
 
 body {
-  background-color: gray;
+  background-color: whitesmoke;
+  font-family: sans-serif;
 }
 
 .deleteBtn {
@@ -167,15 +163,27 @@ body {
 }
 
 #searchBar {
-  right: auto;
-  height: 10%;
+  height: 5%;
   width: 50%;
   outline: transparent;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+}
+
+#searchedItem {
+  height: 5%;
+  width: 12%;
+  outline: transparent;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
 }
 
 .hidden {
   display: none;
 }
 
-.title {
+.lightText {
+  color: rgb(153, 153, 153);
 }

@@ -27,13 +27,16 @@
         </div>
       </div>
       <div class="todoList">
-        <h2>Todo List</h2>
         <input
           type="search"
           id="searchBar"
           oninput="searchItem()"
           placeholder="search"
         />
+        <select id="searchedItem">
+          <option value="title">Title</option>
+          <option value="task">Task</option>
+        </select>
         <div id="todos"></div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 const getTaskBody = function (task, todoId) {
   const { item, id, isDone } = task;
-  const [cName, check] = isDone ? ['class="lightText"', 'checked'] : ['', ''];
+  const [check, cname] = isDone ? ['checked', 'lightText'] : ['', ''];
   const checkOnclick = `onclick = "toggleTaskDoneStatus(${id},${todoId})"`;
   const buttonOnclick = `onclick="performDelete(${id},'task',${todoId})`;
   return (
     `<span>
       <input type="checkbox" ${checkOnclick} ${check} />
-     <span ${cName} contenteditable="true" onfocusout="renameTask(${id})" id="item${id}">
+     <span class="${cname}" contenteditable="true" onfocusout="renameTask(${id})" id="item${id}">
       ${item}</span>
      </span>
     <input class="deleteBtn" type="button" value="delete" ${buttonOnclick}" />`);
@@ -124,6 +124,12 @@ const toggleTaskDoneStatus = (id, todoId) =>
     const [tasksDone, totalTasks] = counter.innerText.split('/');
     const tasksCompleted = +tasksDone + (isDone ? 1 : -1);
     counter.innerText = `${tasksCompleted}/${totalTasks}`
+    const task = getElement(`#task${id}`);
+    if (isDone) {
+      task.classList.add('lightText');
+      return;
+    }
+    task.classList.remove('lightText');
   });
 
 const renameTitle = (id) => {
@@ -185,21 +191,27 @@ const focusonInput = (id) => {
   title.focus();
 };
 
-const getUniqueItems = (set1Elements, set2Elements) => {
-  const newElements = set2Elements.filter((element1) => {
-    return set1Elements.every(element2 => element1.id !== element2.id);
-  });
-  return newElements;
-}
+const hideTodo = (todo) => todo.classList.add('hidden');
+const unHideTodo = (todo) => todo.classList.remove('hidden');
+
+const searchByTitle = (todo, searchedText) => {
+  const title = todo.querySelector(`.title`).innerText;
+  const toggleHide = title.includes(searchedText) ? unHideTodo : hideTodo;
+  toggleHide(todo);
+};
+
+const searchByTask = (todo, searchedText) => {
+  const tasks = Array.from(todo.querySelectorAll(`.task`));
+  const filteredTasks = tasks.filter(task => task.innerText.includes(searchedText));
+  const toggleHide = filteredTasks.length !== 0 ? unHideTodo : hideTodo;
+  toggleHide(todo);
+};
 
 const searchItem = () => {
   const searchedText = getElement('#searchBar').value;
-  const hideTodo = (todo) => todo.classList.add('hidden');
-  const unHideTodo = (todo) => todo.classList.remove('hidden');
+  const searchedItem = getElement('#searchedItem').value;
+  const search = searchedItem === 'title' ? searchByTitle : searchByTask;
   const todos = Array.from(getAllElements('.todo'));
-  todos.forEach(todo => {
-    const title = todo.querySelector(`.title`).innerText;
-    const toggleHide = title.includes(searchedText) ? unHideTodo : hideTodo;
-    toggleHide(todo);
-  });
+  todos.forEach(todo => search(todo, searchedText));
 };
+
