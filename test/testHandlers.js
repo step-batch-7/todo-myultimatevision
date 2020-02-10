@@ -3,8 +3,8 @@ const { app } = require('../lib/handlers');
 
 
 describe('GET', function () {
-  describe('GET home page', function () {
-    it('should get the home page', function (done) {
+  describe('GET login page', function () {
+    it('should get the login page', function (done) {
       request(app.serve.bind(app))
         .get('/')
         .set('Accept', '*/*')
@@ -14,7 +14,38 @@ describe('GET', function () {
         .expect(/Login/, done);
     });
 
-    it('should get the home page when /home.html', function (done) {
+    it('should get the login page', function (done) {
+      request(app.serve.bind(app))
+        .get('/login.html')
+        .set('Accept', '*/*')
+        .expect(200)
+        .expect('Content-Type', 'text/html')
+        .expect('Content-Length', '801')
+        .expect(/Login/, done);
+    });
+
+    it('should redirectTo login page for /home.html when cookie not present', function (done) {
+      request(app.serve.bind(app))
+        .get('/home.html')
+        .set('Accept', '*/*')
+        .expect(301)
+        .expect('location', '/entry.html')
+        .expect('', done);
+    });
+  });
+
+  describe('GET home page', function () {
+    it('should get the redirect for / and cookie is present', function (done) {
+      request(app.serve.bind(app))
+        .get('/')
+        .set('Accept', '*/*')
+        .set('Cookie', 'user=sai; password=sai@16')
+        .expect(301)
+        .expect('location', '/home.html')
+        .expect('', done);
+    });
+
+    it('should get the home page for /home.html', function (done) {
       request(app.serve.bind(app))
         .get('/home.html')
         .set('Accept', '*/*')
@@ -23,6 +54,16 @@ describe('GET', function () {
         .expect('Content-Type', 'text/html')
         .expect('Content-Length', '1065')
         .expect(/Todo/, done);
+    });
+
+    it('should redirect home page for /login.html when cookie is present', function (done) {
+      request(app.serve.bind(app))
+        .get('/login.html')
+        .set('Accept', '*/*')
+        .set('Cookie', 'user=sai; password=sai@16')
+        .expect(301)
+        .expect('location', '/home.html')
+        .expect('', done);
     });
   });
 
@@ -45,5 +86,4 @@ describe('GET', function () {
         .expect(/"title":"todo app"/, done);
     });
   });
-
 })
