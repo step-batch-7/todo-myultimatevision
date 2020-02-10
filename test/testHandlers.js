@@ -1,5 +1,7 @@
 const request = require('supertest');
 const { app } = require('../lib/handlers');
+const sinon = require('sinon');
+const fs = require('fs');
 
 
 describe('GET', function () {
@@ -87,3 +89,29 @@ describe('GET', function () {
     });
   });
 })
+
+describe('POST', function () {
+  beforeEach(() => sinon.replace(fs, 'writeFileSync', () => { }));
+  afterEach(() => sinon.restore());
+  describe('/createTodo', function () {
+    it('should create Todo by given title', function (done) {
+      request(app.serve.bind(app))
+        .post('/createTodo')
+        .set('Accept', '*/*')
+        .send('title="STEP Application"')
+        .expect(200)
+        .expect(/STEP Application/, done);
+    });
+  });
+
+  describe('/addTask', function () {
+    it('should add Task to todo ', function (done) {
+      request(app.serve.bind(app))
+        .post('/addTask')
+        .set('Accept', '*/*')
+        .send('id=1581055845241&task="wakeup early"')
+        .expect(200)
+        .expect(/wakeup early/, done);
+    });
+  });
+});
